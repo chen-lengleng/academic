@@ -60,25 +60,38 @@
                 </div>
             </div>
         </div>
-        <div class="poliPrinciples" id="poliPrinciples">
-            <div class="commonTit">
-                <div class="ctLeft">
-                    <div class="line"></div>
-                    <div class="font">政治原则</div>
+        <div class="poliAndRoot">
+            <div class="commonTitGroup">
+                <div class="commonTit" id="poliPrinciples">
+                    <div class="ctLeft" @click="switchGuaranteeStance('guarantee')">
+                        <div class="line"></div>
+                        <div class="font">根本保证</div>
+                    </div>
+                    <div class="ctRight" @click="emit('showMoreContent',1)">
+                        <div class="more">更多</div>
+                        <ArrowRight style="width:14px;height:14px;"/>
+                    </div>
                 </div>
-                <div class="ctRight" @click="emit('showMoreContent',1)">
-                    <div class="more">更多</div>
-                    <ArrowRight style="width:14px;height:14px;"/>
+                <div class="interval"></div>
+                <div class="commonTit" id="international">
+                    <div class="ctLeft" @click="switchGuaranteeStance('stance')">
+                        <div class="line"></div>
+                        <div class="font">根本立场</div>
+                    </div>
+                    <div class="ctRight" @click="emit('showMoreContent',2)">
+                        <div class="more">更多</div>
+                        <ArrowRight style="width:14px;height:14px;"/>
+                    </div>
                 </div>
             </div>
-            <div class="ppMain">
+            <div class="ppMain" v-show="state.titleType == 'guarantee'">
                 <div class="switchArea"> 
                     <div class="switchItem" :class="state.switchPoliIndex==0?'switchActive':''" @click="switchPoliPrinciples('first')">党对经济工作的全面指导</div>
                     <div class="switchItem" :class="state.switchPoliIndex==1?'switchActive':''" @click="switchPoliPrinciples('second')">以人民为中心的发展思想</div>
                 </div>
                 <div class="mainCont">
-                    <div class="commonItem">
-                        <div class="itemTit">中文文献</div>
+                    <div class="commonItem" v-if="state.politicalItemData.chineseDoc?.length!==0">
+                        <div class="itemTit">学者阐释</div>
                         <div class="itemCont" v-for="ppItem1 in state.politicalItemData.chineseDoc" :key="ppItem1" @click="showDetailPage(ppItem1,5)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
@@ -90,7 +103,7 @@
                         </div>
                     </div>
                     <div class="commonItem" v-if="state.politicalItemData.threeNews?.length!==0">
-                        <div class="itemTit">三报一刊</div>
+                        <div class="itemTit">总书记论述</div>
                         <div class="itemCont" v-for="ppItem2 in state.politicalItemData.threeNews" :key="ppItem2" @click="showDetailPage(ppItem2,5)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
@@ -101,6 +114,44 @@
                             </div>
                         </div>
                     </div>
+                    <div class="emptyCommonItem" v-if="state.politicalItemData.chineseDoc?.length==0&&state.politicalItemData.threeNews?.length==0">
+                        <div class="itemTit">暂无内容</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ppMain" v-show="state.titleType == 'stance'">
+                <div class="switchArea"> 
+                    <div class="switchItem" :class="state.switchRgIndex==0?'switchActive':''" @click="switchRootGuarantee('first')">党对经济工作的全面指导</div>
+                    <div class="switchItem" :class="state.switchRgIndex==1?'switchActive':''" @click="switchRootGuarantee('second')">以人民为中心的发展思想</div>
+                </div>
+                <div class="mainCont">
+                    <div class="commonItem" v-if="state.rootGuaranteeItemData.chineseDoc?.length!==0">
+                        <div class="itemTit">学者阐释</div>
+                        <div class="itemCont" v-for="ppItem1 in state.rootGuaranteeItemData.chineseDoc" :key="ppItem1" @click="showDetailPage(ppItem1,5)">
+                            <div class="commonItemLeft">
+                                <div class="miniCircle"></div>
+                                <div class="contFont">{{ ppItem1.title }}</div>
+                            </div>
+                            <div class="commonItemRight">
+                                {{ ppItem1.pubDate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="commonItem" v-if="state.rootGuaranteeItemData.threeNews?.length!==0">
+                        <div class="itemTit">总书记论述</div>
+                        <div class="itemCont" v-for="ppItem2 in state.rootGuaranteeItemData.threeNews" :key="ppItem2" @click="showDetailPage(ppItem2,5)">
+                            <div class="commonItemLeft">
+                                <div class="miniCircle"></div>
+                                <div class="contFont">{{ ppItem2.title }}</div>
+                            </div>
+                            <div class="commonItemRight">
+                                {{ ppItem2.pubDate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="emptyCommonItem" v-if="state.rootGuaranteeItemData.chineseDoc?.length==0&&state.rootGuaranteeItemData.threeNews?.length==0">
+                        <div class="itemTit">暂无内容</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -108,10 +159,10 @@
             <div class="commonTit">
                 <div class="ctLeft">
                     <div class="line"></div>
-                    <div class="font">五大支柱</div>
+                    <div class="font">核心内容</div>
                 </div>
                 <div class="ctRight">
-                    <div class="more" @click="emit('showMoreContent',2)">更多</div>
+                    <div class="more" @click="emit('showMoreContent',3)">更多</div>
                     <ArrowRight style="width:14px;height:14px;"/>
                 </div>
             </div>
@@ -122,10 +173,11 @@
                     <div class="fpSwitchItem" :class="state.switchFivePillarIndex==2?'fpSwitchActive':''" @click="switchFivePillar(2)">新发展格局</div>
                     <div class="fpSwitchItem" :class="state.switchFivePillarIndex==3?'fpSwitchActive':''" @click="switchFivePillar(3)">新质生产力</div>
                     <div class="fpSwitchItem" :class="state.switchFivePillarIndex==4?'fpSwitchActive':''" @click="switchFivePillar(4)">高质量发展</div>
+                    <div class="fpSwitchItem" :class="state.switchFivePillarIndex==5?'fpSwitchActive':''" @click="switchFivePillar(5)">中国式现代化</div>
                 </div>
                 <div class="fpmainCont">
                     <div class="commonItem" v-if="state.fivePillarItemData.chineseDoc?.length !== 0">
-                        <div class="itemTit">中文文献</div>
+                        <div class="itemTit">学者阐释</div>
                         <div class="itemCont" v-for="fpItem1 in state.fivePillarItemData.chineseDoc" :key="fpItem1" @click="showDetailPage(fpItem1,4)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
@@ -137,7 +189,7 @@
                         </div>
                     </div>
                     <div class="commonItem" v-if="state.fivePillarItemData.threeNews?.length !== 0">
-                        <div class="itemTit">三报一刊</div>
+                        <div class="itemTit">总书记论述</div>
                         <div class="itemCont" v-for="fpItem2 in state.fivePillarItemData.threeNews" :key="fpItem2" @click="showDetailPage(fpItem2,4)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
@@ -148,18 +200,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="commonItem" v-if="state.fivePillarItemData.englishDoc?.length !== 0">
-                        <div class="itemTit">英文文献</div>
-                        <div class="itemCont" v-for="fpItem3 in state.fivePillarItemData.englishDoc" :key="fpItem3" @click="showDetailPage(fpItem3,4)">
-                            <div class="commonItemLeft">
-                                <div class="miniCircle"></div>
-                                <div class="contFont">{{ fpItem3.title }}</div>
-                            </div>
-                            <div class="commonItemRight">
-                                {{ fpItem3.pubDate }}
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -167,9 +207,9 @@
             <div class="commonTit">
                 <div class="ctLeft">
                     <div class="line"></div>
-                    <div class="font">六个着力点</div>
+                    <div class="font">重要抓手</div>
                 </div>
-                <div class="ctRight" @click="emit('showMoreContent',3)">
+                <div class="ctRight" @click="emit('showMoreContent',4)">
                     <div class="more">更多</div>
                     <ArrowRight style="width:14px;height:14px;"/>
                 </div>
@@ -179,7 +219,7 @@
                     <div class="spItemFontArea">
                         <div class="fontAreaTit">
                             <div class="fatLeft">{{ sixItem.docType }}</div>
-                            <div class="fatMore" @click="emit('showMoreContent',3)">
+                            <div class="fatMore" @click="emit('showMoreContent',4)">
                                 <div class="more">更多</div>
                                 <ArrowRight style="width:14px;height:14px;"/>
                             </div>
@@ -203,29 +243,11 @@
                 </div>
             </div>
         </div>
-        <div class="international" id="international">
-            <div class="commonTit">
-                <div class="ctLeft">
-                    <div class="line"></div>
-                    <div class="font">国际化</div>
-                </div>
-                <div class="ctRight" @click="emit('showMoreContent',4)">
-                    <div class="more">更多</div>
-                    <ArrowRight style="width:14px;height:14px;"/>
-                </div>
-            </div>
-            <div class="itMain">
-                <div class="itItem" v-for="itItem in state.internationalData" :key="itItem.id">
-                    <img :src="itItem.imgUrl" class="itItemImg" @click="emit('showMoreContent',4)">
-                    <div class="itItemFont">{{ itItem.docType }}</div>
-                </div>
-            </div>
-        </div>
         <div class="methodology" id="methodology">
             <div class="commonTit">
                 <div class="ctLeft">
                     <div class="line"></div>
-                    <div class="font">方法论</div>
+                    <div class="font">策略方法</div>
                 </div>
                 <div class="ctRight" @click="emit('showMoreContent',5)">
                     <div class="more">更多</div>
@@ -290,12 +312,16 @@ const state = reactive({
     currentLoopImg:'',//当前轮播图片
     currentLoopIndex:0,//当前轮播索引值
     currentLoopText:'',//当前轮播内容标题
-    switchPoliIndex:0,//政治原则当前页签
-    politicalData:[],//政治原则整体
-    politicalItemData:[],//政治原则小模块
+    switchPoliIndex:0,//根本保证当前页签
+    politicalData:[],//根本保证整体
+    politicalItemData:[],//根本保证小模块
     switchFivePillarIndex:0,//五大支柱当前页签
     fivePillarData:[],//五大支柱整体
     fivePillarItemData:[],//五大支柱小模块
+    switchRgIndex:0,//根本立场当前页签
+    rootGuaranteeData:[],//根本立场整体
+    rootGuaranteeItemData:[],//根本立场小模块
+    titleType:'guarantee'
 })
 const containerRef = ref(null)
 
@@ -309,7 +335,7 @@ const scrollToSection = (id) => {
     })
   }
 }
-//处理政治原则数据条数
+//处理根本保证数据条数
 const slicePpData = data => {
     if(data.threeNews.length==0){
         data.chineseDoc = data.chineseDoc.length>5?data.chineseDoc.slice(0,5):data.chineseDoc
@@ -319,7 +345,7 @@ const slicePpData = data => {
     }
     return data
 }
-//处理政治原则数据
+//处理根本保证数据
 const handlePPDataOper = ppData => {
     let ppFirstArr = {
         chineseDoc:[],
@@ -330,14 +356,14 @@ const handlePPDataOper = ppData => {
         threeNews:[]
     }
     ppData.forEach(ppItem => {
-        if(ppItem.docType=='坚持党的全面领导'){
+        if(ppItem.docType=='党对经济工作的全面指导'){
             if(ppItem.docSource==2){
                 ppFirstArr.chineseDoc.push(ppItem)
             }else if(ppItem.docSource==1){
                 ppFirstArr.threeNews.push(ppItem)
             }
         }
-        if(ppItem.docType=='坚持以人民为中心的发展思想'){
+        if(ppItem.docType=='以人民为中心的发展思想'){
             if(ppItem.docSource==2){
                 ppSecondArr.chineseDoc.push(ppItem)
             }else if(ppItem.docSource==1){
@@ -349,6 +375,38 @@ const handlePPDataOper = ppData => {
     ppSecondArr = slicePpData(ppSecondArr)
     state.politicalData = [ppFirstArr,ppSecondArr]
     state.politicalItemData = state.politicalData[state.switchPoliIndex]
+}
+
+//处理根本立场数据
+const handleRootGuaranteeDataOper = rgData => {
+    let rgFirstArr = {
+        chineseDoc:[],
+        threeNews:[]
+    }
+    let rgSecondArr = {
+        chineseDoc:[],
+        threeNews:[]
+    }
+    rgData.forEach(rgItem => {
+        if(rgItem.docType=='党对经济工作的全面指导'){
+            if(rgItem.docSource==2){
+                rgFirstArr.chineseDoc.push(rgItem)
+            }else if(rgItem.docSource==1){
+                rgFirstArr.threeNews.push(rgItem)
+            }
+        }
+        if(rgItem.docType=='以人民为中心的发展思想'){
+            if(rgItem.docSource==2){
+                rgSecondArr.chineseDoc.push(rgItem)
+            }else if(rgItem.docSource==1){
+                rgSecondArr.threeNews.push(rgItem)
+            }
+        }
+    });
+    rgFirstArr = slicePpData(rgFirstArr)
+    rgSecondArr = slicePpData(rgSecondArr)
+    state.rootGuaranteeData = [rgFirstArr,rgSecondArr]
+    state.rootGuaranteeItemData = state.rootGuaranteeData[state.switchRgIndex]
 }
 //处理五大支柱数量
 const sliceFiveData = data => {
@@ -376,6 +434,7 @@ const handlefiveDataOper = fpData => {
     let fpThirdArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
     let fpFourArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
     let fpFiveArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
+    let fpSixArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
     fpData.forEach(fpItem => {
         if(fpItem.docType=='新发展阶段'){
             switch (fpItem.docSource) {
@@ -452,8 +511,24 @@ const handlefiveDataOper = fpData => {
                     break;
             }
         }
+        if(fpItem.docType=='中国式现代化'){
+            switch (fpItem.docSource) {
+                case 1:
+                    fpSixArr.threeNews.push(fpItem)
+                    break;
+                case 2:
+                    fpSixArr.chineseDoc.push(fpItem)
+                    break;
+                case 3:
+                    fpSixArr.englishDoc.push(fpItem)
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     });
-    state.fivePillarData = [ sliceFiveData(fpFirstArr),sliceFiveData(fpSecondArr),sliceFiveData(fpThirdArr),sliceFiveData(fpFourArr),sliceFiveData(fpFiveArr) ]
+    state.fivePillarData = [ sliceFiveData(fpFirstArr),sliceFiveData(fpSecondArr),sliceFiveData(fpThirdArr),sliceFiveData(fpFourArr),sliceFiveData(fpFiveArr),sliceFiveData(fpSixArr) ]
     state.fivePillarItemData = state.fivePillarData[state.switchFivePillarIndex]
 }
 //处理国际化数据
@@ -488,6 +563,10 @@ const handleSixPointDataOper = sixPointData => {
         }
     })
     state.sixPointData = Array.from(map.values())
+    // 要排除的类型
+    const excludeTypes = ["创新驱动发展", "制造业和实体经济"];
+    // 过滤并排除指定类型
+    state.sixPointData = state.sixPointData.filter(item => !excludeTypes.includes(item.docType));
 } 
 //获取首页所有数据
 const getAllHomeData = () =>{
@@ -496,27 +575,37 @@ const getAllHomeData = () =>{
             let data = res.data
             //习近平经济思想
             state.econThoughtData = data['6']
-            //政治原则
+            //根本保证
             let ppData = data['5']
             handlePPDataOper(ppData)
-            //五大支柱
+            //核心内容
             let fpData = data['4']
             handlefiveDataOper(fpData)
-            //方法论
+            //策略方法
             state.methodologyData = data['1']
-            //国际化
-            let interData = data['2']
-            handleInterDataOper(interData)
-            //六个着力点
+            //根本立场
+            let interData = data['7']
+            handleRootGuaranteeDataOper(interData)
+            //重要抓手
             let sixPointData = data['3']
             handleSixPointDataOper(sixPointData)
         }
     })
 }
-//政治原则切换
+//根本保证和根本立场切换
+const switchGuaranteeStance = titleType => {
+    if(!titleType) return
+    state.titleType = titleType
+}
+//根本保证切换
 const switchPoliPrinciples = val => {
     state.switchPoliIndex = val=='first'?0:1
     state.politicalItemData = state.politicalData[state.switchPoliIndex]
+}
+//根本立场切换
+const switchRootGuarantee = val => {
+    state.switchRgIndex = val=='first'?0:1
+    state.rootGuaranteeItemData = state.rootGuaranteeData[state.switchRgIndex]
 }
 //五大支柱切换
 const switchFivePillar = val => {
@@ -616,6 +705,17 @@ defineExpose({
         font-size: 14px;
         color: #DD0003;
         cursor: pointer;
+    }
+}
+.emptyCommonItem{
+    display: flex;
+    margin-bottom: 10px;
+    margin-left: 15px;
+    align-items: center;
+    justify-content: center;
+    .itemTit{
+        font-size: 14px;
+        color: #333;
     }
 }
 .commonItem{
@@ -759,7 +859,7 @@ defineExpose({
 }
 .econThought{
     width: 90%;
-    height: 300px;
+    height: 320px;
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
@@ -832,6 +932,21 @@ defineExpose({
         }
     }
 }
+.poliAndRoot{
+    display: flex;
+    flex-direction: column;
+    width:90%;
+    height: 310px;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+    .interval{
+        width: 20px;
+    }
+    .commonTitGroup{
+        display: flex;
+        align-items: center;
+    }
+}
 .poliPrinciples{
     width:90%;
     height: 310px;
@@ -839,50 +954,52 @@ defineExpose({
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    .ppMain{
-        width: 100%;
-        height: calc(100% - 45px);
+}
+.ppMain{
+    width: 100%;
+    height: calc(100% - 45px);
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+.switchArea{
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    .switchItem{
+        width: 50%;
+        height: 100%;
+        font-size: 16px;
+        color: #333333;
         display: flex;
-        flex-direction: column;
-        background-color: #fff;
-    }
-    .switchArea{
-        height: 40px;
-        width: 100%;
-        display: flex;
+        justify-content: center;
         align-items: center;
-        flex-shrink: 0;
-        .switchItem{
-            width: 50%;
-            height: 100%;
-            font-size: 16px;
-            color: #333333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(221, 0, 3,0.1);
-        }
-        .switchActive{
-            background-color: rgb(221, 0, 3);
-            color: #fff;
-        }
+        background-color: rgba(221, 0, 3,0.1);
     }
-    .mainCont{
-        height: calc(100% - 40px);
-        width: calc(100% - 4px);
-        box-shadow: 0px 8px 20px 0px #B6B6B63F;
-        padding: 15px 0;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        // overflow: auto;
+    .switchActive{
+        background-color: rgb(221, 0, 3);
+        color: #fff;
     }
+}
+.mainCont{
+    // height: calc(100% - 40px);
+    height: 100%;
+    width: calc(100% - 4px);
+    // box-shadow: 0px 8px 20px 0px #B6B6B63F;
+    padding: 15px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    // overflow: auto;
 }
 .fivePillar{
     width:90%;
-    min-height: 300px;
-    max-height: 480px;
+    // min-height: 300px;
+    // max-height: 480px;
+    height: 400px;
     margin-bottom: 30px;
     display: flex;
     flex-direction: column;
@@ -927,7 +1044,7 @@ defineExpose({
     }
 }
 .sixPoint{
-    height: 460px;
+    height: 260px;
     width:90%;
     margin-bottom: 30px;
     display: flex;
@@ -940,7 +1057,7 @@ defineExpose({
         justify-content: space-between;
         flex-wrap: wrap;
         .spItem{
-            width: 30%;
+            width: 24%;
             height: 200px;
             margin-bottom: 20px;
             position: relative;
@@ -1062,7 +1179,7 @@ defineExpose({
 }
 .methodology{
     width: 90%;
-    height: 310px;
+    min-height: 310px;
     margin-bottom: 30px;
     display: flex;
     flex-direction: column;

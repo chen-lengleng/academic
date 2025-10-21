@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="navBar">
-            <div class="bar" :class="state.currentMoreIndex==1?'barActive':''" @click="goTo('poliPrinciples')">政治原则</div>
-            <div class="bar" :class="state.currentMoreIndex==2?'barActive':''" @click="goTo('fivePillar')">五大支柱</div>
-            <div class="bar" :class="state.currentMoreIndex==3?'barActive':''" @click="goTo('sixPoint')">六个着力点</div>
-            <div class="bar" :class="state.currentMoreIndex==4?'barActive':''" @click="goTo('international')">国际化</div>
-            <div class="bar" :class="state.currentMoreIndex==5?'barActive':''" @click="goTo('methodology')">方法论</div>
+            <div class="bar" :class="state.currentMoreIndex==1?'barActive':''" @click="goTo('poliPrinciples')">根本保证</div>
+            <div class="bar" :class="state.currentMoreIndex==2?'barActive':''" @click="goTo('international')">根本立场</div>
+            <div class="bar" :class="state.currentMoreIndex==3?'barActive':''" @click="goTo('fivePillar')">核心内容</div>
+            <div class="bar" :class="state.currentMoreIndex==4?'barActive':''" @click="goTo('sixPoint')">重要抓手</div>
+            <div class="bar" :class="state.currentMoreIndex==5?'barActive':''" @click="goTo('methodology')">策略方法</div>
         </div>
         <div class="navBarShadow"></div>
         <div class="mainContent" @click="handleClick" @mousedown="handleMouseDown" @mousemove="handleMouseMove">
@@ -110,13 +110,13 @@ const goTo = (id) => {
         case 'poliPrinciples':
             state.currentMoreIndex = 1
             break;
-        case 'fivePillar':
+        case 'international':
             state.currentMoreIndex = 2
             break;
-        case 'sixPoint':
+        case 'fivePillar':
             state.currentMoreIndex = 3
             break;
-        case 'international':
+        case 'sixPoint':
             state.currentMoreIndex = 4
             break;
         case 'methodology':

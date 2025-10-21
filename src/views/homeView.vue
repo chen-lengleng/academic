@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="navBar">
-            <div class="bar" :class="state.currentMoreIndex==1?'barActive':''" @click="goTo('poliPrinciples')">政治原则</div>
-            <div class="bar" :class="state.currentMoreIndex==2?'barActive':''" @click="goTo('fivePillar')">五大支柱</div>
-            <div class="bar" :class="state.currentMoreIndex==3?'barActive':''" @click="goTo('sixPoint')">六个着力点</div>
-            <div class="bar" :class="state.currentMoreIndex==4?'barActive':''" @click="goTo('international')">国际化</div>
-            <div class="bar" :class="state.currentMoreIndex==5?'barActive':''" @click="goTo('methodology')">方法论</div>
+            <div class="bar" :class="state.currentMoreIndex==1?'barActive':''" @click="goTo('poliPrinciples')">根本保证</div>
+            <div class="bar" :class="state.currentMoreIndex==2?'barActive':''" @click="goTo('international')">根本立场</div>
+            <div class="bar" :class="state.currentMoreIndex==3?'barActive':''" @click="goTo('fivePillar')">核心内容</div>
+            <div class="bar" :class="state.currentMoreIndex==4?'barActive':''" @click="goTo('sixPoint')">重要抓手</div>
+            <div class="bar" :class="state.currentMoreIndex==5?'barActive':''" @click="goTo('methodology')">策略方法</div>
         </div>
         <div class="navBarShadow"></div>
         <div class="mainContent" @click="handleClick" @mousedown="handleMouseDown" @mousemove="handleMouseMove">
@@ -52,8 +52,8 @@
             />
         </div>
         <div class="loginAndAi">
-            <div class="laaItem" v-if="!state.moduleShow">
-                <div class="laaIcon" @click="returnHomePage">
+            <div class="laaItem" v-if="!state.moduleShow" @click="returnHomePage">
+                <div class="laaIcon">
                     <!-- <UserFilled style="height:18px;width:18px"/> -->
                     <HomeFilled style="height:18px;width:18px;"/>
                 </div>
@@ -79,7 +79,6 @@ import { useRouter } from 'vue-router'
 import { docDetail } from '../api/index.js'
 import { ElMessage } from 'element-plus';
 const router = useRouter()
-const retrieveRef = ref(null)
 const state = reactive({
     popularAll:[
         {
@@ -132,13 +131,13 @@ const goTo = (id) => {
         case 'poliPrinciples':
             state.currentMoreIndex = 1
             break;
-        case 'fivePillar':
+        case 'international':
             state.currentMoreIndex = 2
             break;
-        case 'sixPoint':
+        case 'fivePillar':
             state.currentMoreIndex = 3
             break;
-        case 'international':
+        case 'sixPoint':
             state.currentMoreIndex = 4
             break;
         case 'methodology':
@@ -191,11 +190,11 @@ const handelCurrentType = index => {
         case 1:
             return 5
         case 2:
-            return 4
+            return 7
         case 3:
-            return 3
+            return 4
         case 4:
-            return 2
+            return 3
         case 5:
             return 1
         case '':
@@ -203,17 +202,6 @@ const handelCurrentType = index => {
         default:
             break;
     }
-}
-//搜索方法
-const searchOper = () => {
-    state.currentType = handelCurrentType(state.currentMoreIndex)
-    let param ={
-        content:state.content,
-        type:state.currentType,
-    }
-    nextTick(()=>{
-        retrieveRef.value.searchContent(param)
-    })
 }
 //首页搜索
 const homeSearch = () => {
@@ -239,8 +227,6 @@ const clearSelectedTypeAndContent = () => {
 }
 //返回首页
 const returnHomePage = () => {
-    // state.moduleShow = true
-    // state.retrieveShow = false
     state.currentType = ''
     state.currentMoreIndex = ''
     router.push({
