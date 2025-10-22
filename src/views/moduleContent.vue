@@ -491,7 +491,8 @@ const getAllHomeData = () =>{
             let fpData = data['4']
             handlefiveDataOper(fpData)
             //策略方法
-            state.methodologyData = data['1']
+            let mData = data['1']
+            state.methodologyData = mData.length>10?mData.slice(0,10):mData
             //重要抓手
             let sixPointData = data['3']
             handleSixPointDataOper(sixPointData)
