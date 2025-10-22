@@ -63,7 +63,7 @@
         <div class="poliAndRoot">
             <div class="commonTitGroup">
                 <div class="commonTit" id="poliPrinciples">
-                    <div class="ctLeft" @click="switchGuaranteeStance('guarantee')">
+                    <div class="ctLeft">
                         <div class="line"></div>
                         <div class="font">根本保证</div>
                     </div>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="interval"></div>
                 <div class="commonTit" id="international">
-                    <div class="ctLeft" @click="switchGuaranteeStance('stance')">
+                    <div class="ctLeft">
                         <div class="line"></div>
                         <div class="font">根本立场</div>
                     </div>
@@ -84,15 +84,15 @@
                     </div>
                 </div>
             </div>
-            <div class="ppMain" v-show="state.titleType == 'guarantee'">
+            <div class="ppMain">
                 <div class="switchArea"> 
-                    <div class="switchItem" :class="state.switchPoliIndex==0?'switchActive':''" @click="switchPoliPrinciples('first')">党对经济工作的全面指导</div>
-                    <div class="switchItem" :class="state.switchPoliIndex==1?'switchActive':''" @click="switchPoliPrinciples('second')">以人民为中心的发展思想</div>
+                    <div class="switchItem" :class="state.switchGSIndex==0?'switchActive':''"  @click="switchGuaranteeStance(0)">党对经济工作的全面指导</div>
+                    <div class="switchItem" :class="state.switchGSIndex==1?'switchActive':''" @click="switchGuaranteeStance(1)">以人民为中心的发展思想</div>
                 </div>
                 <div class="mainCont">
-                    <div class="commonItem" v-if="state.politicalItemData.chineseDoc?.length!==0">
+                    <div class="commonItem" v-if="state.guaranteeAndStanceItemData.chineseDoc?.length!==0">
                         <div class="itemTit">学者阐释</div>
-                        <div class="itemCont" v-for="ppItem1 in state.politicalItemData.chineseDoc" :key="ppItem1" @click="showDetailPage(ppItem1,5)">
+                        <div class="itemCont" v-for="ppItem1 in state.guaranteeAndStanceItemData.chineseDoc" :key="ppItem1" @click="showDetailPage(ppItem1,5)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
                                 <div class="contFont">{{ ppItem1.title }}</div>
@@ -102,9 +102,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="commonItem" v-if="state.politicalItemData.threeNews?.length!==0">
+                    <div class="commonItem" v-if="state.guaranteeAndStanceItemData.threeNews?.length!==0">
                         <div class="itemTit">总书记论述</div>
-                        <div class="itemCont" v-for="ppItem2 in state.politicalItemData.threeNews" :key="ppItem2" @click="showDetailPage(ppItem2,5)">
+                        <div class="itemCont" v-for="ppItem2 in state.guaranteeAndStanceItemData.threeNews" :key="ppItem2" @click="showDetailPage(ppItem2,5)">
                             <div class="commonItemLeft">
                                 <div class="miniCircle"></div>
                                 <div class="contFont">{{ ppItem2.title }}</div>
@@ -114,42 +114,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="emptyCommonItem" v-if="state.politicalItemData.chineseDoc?.length==0&&state.politicalItemData.threeNews?.length==0">
-                        <div class="itemTit">暂无内容</div>
-                    </div>
-                </div>
-            </div>
-            <div class="ppMain" v-show="state.titleType == 'stance'">
-                <div class="switchArea"> 
-                    <div class="switchItem" :class="state.switchRgIndex==0?'switchActive':''" @click="switchRootGuarantee('first')">党对经济工作的全面指导</div>
-                    <div class="switchItem" :class="state.switchRgIndex==1?'switchActive':''" @click="switchRootGuarantee('second')">以人民为中心的发展思想</div>
-                </div>
-                <div class="mainCont">
-                    <div class="commonItem" v-if="state.rootGuaranteeItemData.chineseDoc?.length!==0">
-                        <div class="itemTit">学者阐释</div>
-                        <div class="itemCont" v-for="ppItem1 in state.rootGuaranteeItemData.chineseDoc" :key="ppItem1" @click="showDetailPage(ppItem1,5)">
-                            <div class="commonItemLeft">
-                                <div class="miniCircle"></div>
-                                <div class="contFont">{{ ppItem1.title }}</div>
-                            </div>
-                            <div class="commonItemRight">
-                                {{ ppItem1.pubDate }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="commonItem" v-if="state.rootGuaranteeItemData.threeNews?.length!==0">
-                        <div class="itemTit">总书记论述</div>
-                        <div class="itemCont" v-for="ppItem2 in state.rootGuaranteeItemData.threeNews" :key="ppItem2" @click="showDetailPage(ppItem2,5)">
-                            <div class="commonItemLeft">
-                                <div class="miniCircle"></div>
-                                <div class="contFont">{{ ppItem2.title }}</div>
-                            </div>
-                            <div class="commonItemRight">
-                                {{ ppItem2.pubDate }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="emptyCommonItem" v-if="state.rootGuaranteeItemData.chineseDoc?.length==0&&state.rootGuaranteeItemData.threeNews?.length==0">
+                    <div class="emptyCommonItem" v-if="state.guaranteeAndStanceItemData.chineseDoc?.length==0&&state.guaranteeAndStanceItemData.threeNews?.length==0">
                         <div class="itemTit">暂无内容</div>
                     </div>
                 </div>
@@ -312,16 +277,12 @@ const state = reactive({
     currentLoopImg:'',//当前轮播图片
     currentLoopIndex:0,//当前轮播索引值
     currentLoopText:'',//当前轮播内容标题
-    switchPoliIndex:0,//根本保证当前页签
-    politicalData:[],//根本保证整体
-    politicalItemData:[],//根本保证小模块
     switchFivePillarIndex:0,//五大支柱当前页签
     fivePillarData:[],//五大支柱整体
     fivePillarItemData:[],//五大支柱小模块
-    switchRgIndex:0,//根本立场当前页签
-    rootGuaranteeData:[],//根本立场整体
-    rootGuaranteeItemData:[],//根本立场小模块
-    titleType:'guarantee'
+    switchGSIndex:0,//根本立场和根本保证切换的位置
+    guaranteeAndStanceData:[],//根本立场和根本保证的数据
+    guaranteeAndStanceItemData:[],//根本立场和根本保证当前显示的数据
 })
 const containerRef = ref(null)
 
@@ -345,96 +306,56 @@ const slicePpData = data => {
     }
     return data
 }
-//处理根本保证数据
-const handlePPDataOper = ppData => {
-    let ppFirstArr = {
+//处理根本保证和根本立场数据
+const handleGuaranteeAndStanceData = (guaranteeData,stanceData) => {
+    let gArr = {
+        chineseDoc:[],//学者阐释
+        threeNews:[]//总书记论述
+    }
+    let sArr = {
         chineseDoc:[],
         threeNews:[]
     }
-    let ppSecondArr = {
-        chineseDoc:[],
-        threeNews:[]
-    }
-    ppData.forEach(ppItem => {
-        if(ppItem.docType=='党对经济工作的全面指导'){
-            if(ppItem.docSource==2){
-                ppFirstArr.chineseDoc.push(ppItem)
-            }else if(ppItem.docSource==1){
-                ppFirstArr.threeNews.push(ppItem)
-            }
-        }
-        if(ppItem.docType=='以人民为中心的发展思想'){
-            if(ppItem.docSource==2){
-                ppSecondArr.chineseDoc.push(ppItem)
-            }else if(ppItem.docSource==1){
-                ppSecondArr.threeNews.push(ppItem)
-            }
+    guaranteeData.forEach(gItem => {
+        if(gItem.docSource==2){
+            gArr.chineseDoc.push(gItem)
+        }else if(gItem.docSource==1){
+            gArr.threeNews.push(gItem)
         }
     });
-    ppFirstArr = slicePpData(ppFirstArr)
-    ppSecondArr = slicePpData(ppSecondArr)
-    state.politicalData = [ppFirstArr,ppSecondArr]
-    state.politicalItemData = state.politicalData[state.switchPoliIndex]
-}
-
-//处理根本立场数据
-const handleRootGuaranteeDataOper = rgData => {
-    let rgFirstArr = {
-        chineseDoc:[],
-        threeNews:[]
-    }
-    let rgSecondArr = {
-        chineseDoc:[],
-        threeNews:[]
-    }
-    rgData.forEach(rgItem => {
-        if(rgItem.docType=='党对经济工作的全面指导'){
-            if(rgItem.docSource==2){
-                rgFirstArr.chineseDoc.push(rgItem)
-            }else if(rgItem.docSource==1){
-                rgFirstArr.threeNews.push(rgItem)
-            }
-        }
-        if(rgItem.docType=='以人民为中心的发展思想'){
-            if(rgItem.docSource==2){
-                rgSecondArr.chineseDoc.push(rgItem)
-            }else if(rgItem.docSource==1){
-                rgSecondArr.threeNews.push(rgItem)
-            }
+    stanceData.forEach(sItem => {
+        if(sItem.docSource==2){
+            sArr.chineseDoc.push(sItem)
+        }else if(sItem.docSource==1){
+            sArr.threeNews.push(sItem)
         }
     });
-    rgFirstArr = slicePpData(rgFirstArr)
-    rgSecondArr = slicePpData(rgSecondArr)
-    state.rootGuaranteeData = [rgFirstArr,rgSecondArr]
-    state.rootGuaranteeItemData = state.rootGuaranteeData[state.switchRgIndex]
+    gArr = slicePpData(gArr)
+    sArr = slicePpData(sArr)
+    state.guaranteeAndStanceData = [gArr,sArr]
+    state.guaranteeAndStanceItemData = state.guaranteeAndStanceData[state.switchGSIndex]
 }
 //处理五大支柱数量
 const sliceFiveData = data => {
-    if(data.englishDoc.length==0){
-        if(data.threeNews.length==0){
-            data.chineseDoc = data.chineseDoc.length>6?data.chineseDoc.slice(0,7):data.chineseDoc
-        }else{
-            data.threeNews = data.chineseDoc.length==0&&data.threeNews.length>7?data.threeNews.slice(0,8):data.chineseDoc.length!==0?data.threeNews.slice(0,2):data.threeNews
-            data.chineseDoc = data.chineseDoc.length>4?data.chineseDoc.slice(0,5):data.chineseDoc
-        }
+    if(data.threeNews.length==0){
+        data.chineseDoc = data.chineseDoc.length>6?data.chineseDoc.slice(0,7):data.chineseDoc
+    }else if(data.chineseDoc.length==0){
+        data.threeNews = data.threeNews.length>6?data.threeNews.slice(0,7):data.threeNews
     }else{
-        if(data.threeNews.length==0){
-            data.chineseDoc = data.chineseDoc.length>5?data.chineseDoc.slice(0,6):data.chineseDoc
-        }else{
-            data.threeNews = data.threeNews.length>1?data.threeNews.slice(0,2):data.threeNews
-            data.chineseDoc = data.chineseDoc.length>3?data.chineseDoc.slice(0,4):data.chineseDoc
-        }
+        data.threeNews = data.threeNews.length>3?data.threeNews.slice(0,4):data.threeNews
+        data.chineseDoc = data.chineseDoc.length>3?data.chineseDoc.slice(0,4):data.chineseDoc
     }
     return data
 }
 //处理五大支柱数据
 const handlefiveDataOper = fpData => {
-    let fpFirstArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
-    let fpSecondArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
-    let fpThirdArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
-    let fpFourArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
-    let fpFiveArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
-    let fpSixArr = { chineseDoc:[],threeNews:[],englishDoc:[] }
+    let fpFirstArr = { chineseDoc:[],threeNews:[] }
+    let fpSecondArr = { chineseDoc:[],threeNews:[] }
+    let fpThirdArr = { chineseDoc:[],threeNews:[]}
+    let fpFourArr = { chineseDoc:[],threeNews:[]}
+    let fpFiveArr = { chineseDoc:[],threeNews:[]}
+    let fpSixArr = { chineseDoc:[],threeNews:[]}
+    let arr = fpData.filter(item=>item.docType=='新发展阶段')
     fpData.forEach(fpItem => {
         if(fpItem.docType=='新发展阶段'){
             switch (fpItem.docSource) {
@@ -443,9 +364,6 @@ const handlefiveDataOper = fpData => {
                     break;
                 case 2:
                     fpFirstArr.chineseDoc.push(fpItem)
-                    break;
-                case 3:
-                    fpFirstArr.englishDoc.push(fpItem)
                     break;
                 default:
                     break;
@@ -459,9 +377,6 @@ const handlefiveDataOper = fpData => {
                 case 2:
                     fpSecondArr.chineseDoc.push(fpItem)
                     break;
-                case 3:
-                    fpSecondArr.englishDoc.push(fpItem)
-                    break;
                 default:
                     break;
             }
@@ -473,9 +388,6 @@ const handlefiveDataOper = fpData => {
                     break;
                 case 2:
                     fpThirdArr.chineseDoc.push(fpItem)
-                    break;
-                case 3:
-                    fpThirdArr.englishDoc.push(fpItem)
                     break;
                 default:
                     break;
@@ -489,9 +401,6 @@ const handlefiveDataOper = fpData => {
                 case 2:
                     fpFourArr.chineseDoc.push(fpItem)
                     break;
-                case 3:
-                    fpFourArr.englishDoc.push(fpItem)
-                    break;
                 default:
                     break;
             }
@@ -504,9 +413,6 @@ const handlefiveDataOper = fpData => {
                 case 2:
                     fpFiveArr.chineseDoc.push(fpItem)
                     break;
-                case 3:
-                    fpFiveArr.englishDoc.push(fpItem)
-                    break;
                 default:
                     break;
             }
@@ -518,9 +424,6 @@ const handlefiveDataOper = fpData => {
                     break;
                 case 2:
                     fpSixArr.chineseDoc.push(fpItem)
-                    break;
-                case 3:
-                    fpSixArr.englishDoc.push(fpItem)
                     break;
                 default:
                     break;
@@ -579,15 +482,16 @@ const getAllHomeData = () =>{
             state.econThoughtData = data['6']
             //根本保证
             let ppData = data['5']
-            handlePPDataOper(ppData)
+            //根本立场
+            let interData = data['7']
+            handleGuaranteeAndStanceData(ppData,interData)
+            // handlePPDataOper(ppData)
+            // handleRootGuaranteeDataOper(interData)
             //核心内容
             let fpData = data['4']
             handlefiveDataOper(fpData)
             //策略方法
             state.methodologyData = data['1']
-            //根本立场
-            let interData = data['7']
-            handleRootGuaranteeDataOper(interData)
             //重要抓手
             let sixPointData = data['3']
             handleSixPointDataOper(sixPointData)
@@ -595,19 +499,9 @@ const getAllHomeData = () =>{
     })
 }
 //根本保证和根本立场切换
-const switchGuaranteeStance = titleType => {
-    if(!titleType) return
-    state.titleType = titleType
-}
-//根本保证切换
-const switchPoliPrinciples = val => {
-    state.switchPoliIndex = val=='first'?0:1
-    state.politicalItemData = state.politicalData[state.switchPoliIndex]
-}
-//根本立场切换
-const switchRootGuarantee = val => {
-    state.switchRgIndex = val=='first'?0:1
-    state.rootGuaranteeItemData = state.rootGuaranteeData[state.switchRgIndex]
+const switchGuaranteeStance = index => {
+    state.switchGSIndex = index
+    state.guaranteeAndStanceItemData = state.guaranteeAndStanceData[state.switchGSIndex]
 }
 //五大支柱切换
 const switchFivePillar = val => {
