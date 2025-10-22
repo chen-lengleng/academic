@@ -555,9 +555,11 @@ const handleInterDataOper = interData => {
 }
 //处理六个着力点数据
 const handleSixPointDataOper = sixPointData => {
+    // 先过滤出 doc_source === 1 的数据
+    const filteredData = sixPointData.filter(item => item.docSource == 1);
     //取出六个类型的第一个
     const map = new Map()
-    sixPointData.forEach(item => {
+    filteredData.forEach(item => {
         if (!map.has(item.docType)) {
             map.set(item.docType, item)
         }
