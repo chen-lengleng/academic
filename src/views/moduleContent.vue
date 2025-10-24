@@ -318,16 +318,16 @@ const handleGuaranteeAndStanceData = (guaranteeData,stanceData) => {
     }
     guaranteeData.forEach(gItem => {
         if(gItem.docSource==2){
-            gArr.chineseDoc.push(gItem)
-        }else if(gItem.docSource==1){
             gArr.threeNews.push(gItem)
+        }else if(gItem.docSource==1){
+            gArr.chineseDoc.push(gItem)
         }
     });
     stanceData.forEach(sItem => {
         if(sItem.docSource==2){
-            sArr.chineseDoc.push(sItem)
-        }else if(sItem.docSource==1){
             sArr.threeNews.push(sItem)
+        }else if(sItem.docSource==1){
+            sArr.chineseDoc.push(sItem)
         }
     });
     gArr = slicePpData(gArr)
@@ -355,7 +355,6 @@ const handlefiveDataOper = fpData => {
     let fpFourArr = { chineseDoc:[],threeNews:[]}
     let fpFiveArr = { chineseDoc:[],threeNews:[]}
     let fpSixArr = { chineseDoc:[],threeNews:[]}
-    let arr = fpData.filter(item=>item.docType=='新发展阶段')
     fpData.forEach(fpItem => {
         if(fpItem.docType=='新发展阶段'){
             switch (fpItem.docSource) {
