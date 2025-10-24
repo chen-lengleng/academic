@@ -360,10 +360,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='新发展阶段'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpFirstArr.threeNews.push(fpItem)
+                    fpFirstArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpFirstArr.chineseDoc.push(fpItem)
+                    fpFirstArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
@@ -372,10 +372,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='新发展理念'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpSecondArr.threeNews.push(fpItem)
+                    fpSecondArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpSecondArr.chineseDoc.push(fpItem)
+                    fpSecondArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
@@ -384,10 +384,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='新发展格局'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpThirdArr.threeNews.push(fpItem)
+                    fpThirdArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpThirdArr.chineseDoc.push(fpItem)
+                    fpThirdArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
@@ -396,10 +396,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='新质生产力'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpFourArr.threeNews.push(fpItem)
+                    fpFourArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpFourArr.chineseDoc.push(fpItem)
+                    fpFourArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
@@ -408,10 +408,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='高质量发展'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpFiveArr.threeNews.push(fpItem)
+                    fpFiveArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpFiveArr.chineseDoc.push(fpItem)
+                    fpFiveArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
@@ -420,10 +420,10 @@ const handlefiveDataOper = fpData => {
         if(fpItem.docType=='中国式现代化'){
             switch (fpItem.docSource) {
                 case 1:
-                    fpSixArr.threeNews.push(fpItem)
+                    fpSixArr.chineseDoc.push(fpItem)
                     break;
                 case 2:
-                    fpSixArr.chineseDoc.push(fpItem)
+                    fpSixArr.threeNews.push(fpItem)
                     break;
                 default:
                     break;
